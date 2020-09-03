@@ -15,39 +15,41 @@
 
 import sys
 
-from parser import getNetwork
 from load import calculeLoads
+from parse import getNetwork
 from delays import iterativeDelays
 from serialiser import generateOutput
 from parser_compare import compareResults
 
-def isStable(net):
-	isStable = True;
-	for link in net.links.values():
-		if link.loadDirect > 1 or link.loadReverse > 1:
-			isStable = False;
 
-	if not isStable:
-		# If network is not stable, program exits here
-		print("Net is not stable!!");
-		exit();
+def isStable(net):
+    isStable = True
+    for link in net.links.values():
+        if link.loadDirect > 1 or link.loadReverse > 1:
+            isStable = False
+
+    if not isStable:
+        # If network is not stable, program exits here
+        print("Net is not stable!!")
+        exit()
+
 
 # Gets the path of the INPUT xml file
-filePath = sys.argv[1];
+filePath = sys.argv[1]
 
 # Get the network object. It contains all the stations, switches, links and flows
 net = getNetwork(filePath)
 
 ## Compute links LOADS ##
-calculeLoads(net);
+calculeLoads(net)
 
 ## Check STABILITY of network ##
-isStable(net);
+isStable(net)
 
 ## Compute flow DELAYS ##
-iterativeDelays(net);
+iterativeDelays(net)
 
 ## Generate output XML into stdout ##
-generateOutput(net, filePath);
+generateOutput(net, filePath)
 
 compareResults(net, filePath)
